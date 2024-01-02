@@ -1,5 +1,26 @@
 .App {
+  display: flex;
+  height: 100vh;
   text-align: center;
+}
+
+.HCanvas {
+  flex: 8;
+  background-color: white;
+}
+
+.HPallet {
+  flex: 2;
+  background-color: lightyellow;
+  display: flex;
+  flex-direction: column;
+}
+
+.pallet_item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 }
 
 .App-logo {

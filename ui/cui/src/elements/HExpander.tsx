@@ -1,4 +1,5 @@
 import { HIfBlock } from "../blocks/HIfBlock";
+import { getPallet } from "../components/HPallet";
 import { HEdge } from "./HEdge";
 import { HTask } from "./HTask";
 
@@ -95,14 +96,26 @@ export class HExpander {
     }
 
     testAdd2() {
-        console.log("testAdd2");
         if (this.edge == null) {
             return;
         }
-        let ifBlock = new HIfBlock(this.edge.x2, this.edge.y2);
-        ifBlock.init(this.edge.canvas);
-        ifBlock.connectTo(this.edge);
-        this.edge.canvas.render();
+        this.edge.canvas.setSelectedEdge(this.edge);
+
+        // console.log("testAdd2");
+        // let pallet_div = document.getElementById("pallet_div");
+        // if (pallet_div == null || this.edge == null) {
+        //     return;
+        // }
+        // pallet_div.style.visibility = "visible";
+        // pallet_div.innerHTML = getPallet(this.edge).toString();
+
+        // if (this.edge == null) {
+        //     return;
+        // }
+        // let ifBlock = new HIfBlock(this.edge.x2, this.edge.y2);
+        // ifBlock.init(this.edge.canvas);
+        // ifBlock.connectTo(this.edge);
+        // this.edge.canvas.render();
     }
 
     draw(): JSX.Element {

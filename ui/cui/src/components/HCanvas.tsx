@@ -4,20 +4,24 @@ import { HEdge } from "../elements/HEdge";
 import { edgeHeight } from "../Constants";
 import { HTask } from "../elements/HTask";
 
-export const HCanvasView: React.FC = () => {
+interface HCanvasViewProps {
+    setSelectedEdge: React.Dispatch<React.SetStateAction<HEdge | null>>;
+}
 
-    const [hCanvas, setHCanvas] = React.useState<HCanvas|null>(null);
-    const [diagram, setDiagram] = React.useState<JSX.Element|null>(null);
+export const HCanvasView: React.FC<HCanvasViewProps> = ({ setSelectedEdge }) => {
+
+    const [hCanvas, setHCanvas] = React.useState<HCanvas | null>(null);
+    const [diagram, setDiagram] = React.useState<JSX.Element | null>(null);
 
     if (hCanvas === null) {
-        let hCanvas = new HCanvas(setDiagram);
+        let hCanvas = new HCanvas(setDiagram, setSelectedEdge);
         hCanvas.init();
         setHCanvas(hCanvas);
         setDiagram(hCanvas.drawDiagram());
     }
 
     return (
-        <div>
+        <div className="HCanvas">
             {diagram}
             {/* <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0 }}>
             {hCanvas?.elements.map((element, i) => (
@@ -31,11 +35,13 @@ export const HCanvasView: React.FC = () => {
 };
 
 export class HCanvas {
-    setDiagram: React.Dispatch<React.SetStateAction<JSX.Element|null>>;
+    setDiagram: React.Dispatch<React.SetStateAction<JSX.Element | null>>;
+    setSelectedEdge: React.Dispatch<React.SetStateAction<HEdge | null>>;
     elements: HElement[] = [];
 
-    constructor(setDiagram: React.Dispatch<React.SetStateAction<JSX.Element|null>>) {
+    constructor(setDiagram: React.Dispatch<React.SetStateAction<JSX.Element | null>>, setSelectedEdge: React.Dispatch<React.SetStateAction<HEdge | null>>) {
         this.setDiagram = setDiagram;
+        this.setSelectedEdge = setSelectedEdge;
     }
 
     init() {
@@ -60,11 +66,11 @@ export class HCanvas {
     drawDiagram(): JSX.Element {
         return <>
             <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0 }}>
-            {this.elements.map((element, i) => (
-                <>
-                    {element.draw()}
-                </>
-            ))}
+                {this.elements.map((element, i) => (
+                    <>
+                        {element.draw()}
+                    </>
+                ))}
             </svg>
         </>;
     }

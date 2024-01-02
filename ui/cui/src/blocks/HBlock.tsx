@@ -9,19 +9,19 @@ export abstract class HBlock extends HRect {
     nodes: HNode[] = [];
     childBlocks: HBlock[] = [];
 
-    constructor(midX: number, y: number) {
-        super();
-        this.midX = midX;
-        this.y = y;
-    }
+    abstract init(edge: HEdge): void;
 
     connectTo(edge: HEdge): void {
-        if (this.startNode == null || this.endNode == null) {
-            throw new Error("Block not initialized");
-        }
-
         if (edge.source == null || edge.target == null) {
             throw new Error("Edge not initialized");
+        }
+
+        this.midX = edge.x2;
+        this.y = edge.y2;
+        this.init(edge);
+
+        if (this.startNode == null || this.endNode == null) {
+            throw new Error("Block not initialized");
         }
 
         let oldTarget = edge.target;

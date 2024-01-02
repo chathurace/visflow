@@ -38,6 +38,22 @@ export abstract class HNode extends HElement {
         }
 
         let oldTarget = edge.target;
+        this.x = oldTarget.x;
+        this.y = oldTarget.y;
+        edge.target = this;
+        oldTarget.pushDown(this.height + nodeHeight);
+
+        let newOutEdge = new HEdge(edge.canvas);
+        newOutEdge.source = this;
+        newOutEdge.target = oldTarget;
+    }
+
+    connectTo2(edge: HEdge): void {
+        if (edge.source == null || edge.target == null) {
+            throw new Error("Edge not initialized");
+        }
+
+        let oldTarget = edge.target;
         edge.target = this;
 
         let newOutEdge = new HEdge(this.canvas);

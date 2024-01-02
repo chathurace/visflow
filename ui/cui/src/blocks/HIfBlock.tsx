@@ -6,7 +6,8 @@ import { HIfStart } from "../elements/HIfStart";
 import { HBlock } from "./HBlock";
 
 export class HIfBlock extends HBlock {
-    init(canvas: HCanvas): void {
+    init(edge: HEdge): void {
+        let canvas = edge.canvas;
         this.startNode = new HIfStart(canvas);
         this.startNode.midX = this.midX;
         this.startNode.y = this.y;
@@ -22,4 +23,11 @@ export class HIfBlock extends HBlock {
         this.height = this.endNode.bottom - this.y;
         this.width = nodeWidth;
     }
+}
+
+export const addIfBlock = (edge: HEdge) => {
+    let ifBlock = new HIfBlock();
+    ifBlock.connectTo(edge);
+    edge.canvas.setSelectedEdge(null);
+    edge.canvas.render();
 }

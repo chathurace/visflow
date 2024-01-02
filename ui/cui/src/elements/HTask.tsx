@@ -1,5 +1,6 @@
 import { nodeHeight, nodeWidth } from "../Constants";
 import { HCanvas } from "../components/HCanvas";
+import { HEdge } from "./HEdge";
 import { HNode } from "./HNode";
 
 export class HTask extends HNode {
@@ -18,4 +19,12 @@ export class HTask extends HNode {
         <text x={this.midX} y={this.midY} dominantBaseline="middle" textAnchor="middle" fill="black">{this.label}</text>
         </>;
     }
+}
+
+export const addTask = (edge: HEdge) => {
+    let hTask = new HTask(edge.canvas);
+    hTask.label = "Log";
+    hTask.connectTo(edge);
+    edge.canvas.setSelectedEdge(null);
+    edge.canvas.render();
 }
