@@ -1,13 +1,16 @@
 import { HRect } from "../HRect";
+import { HBlock } from "../blocks/HBlock";
 import { HCanvas } from "../components/HCanvas";
 
 export abstract class HElement extends HRect {
     canvas: HCanvas;
+    block: HBlock;
 
-    constructor(canvas: HCanvas) {
+    constructor(block: HBlock, canvas: HCanvas) {
         super();
+        this.block = block;
         this.canvas = canvas;
-        canvas.elements.push(this);
+        canvas.addElement(this);
     }
 
     abstract draw(): JSX.Element;

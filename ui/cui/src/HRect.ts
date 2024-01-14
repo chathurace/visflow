@@ -11,7 +11,7 @@ export class HRect {
         return this._x;
     }
 
-    set x(x: number) {
+    public set x(x: number) {
         this._x = x;
         this._midX = x + this._width / 2;
     }

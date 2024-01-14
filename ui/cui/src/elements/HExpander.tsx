@@ -83,18 +83,6 @@ export class HExpander {
         this._height = height;
     }
 
-    testAdd() {
-        if (this.edge == null) {
-            return;
-        }
-        let task = new HTask(this.edge.canvas);
-        task.label = "Test";
-        task.x = 100;
-        task.y = 400;
-        this.edge.connectTo(task);
-        this.edge.canvas.render();
-    }
-
     testAdd2() {
         if (this.edge == null) {
             return;

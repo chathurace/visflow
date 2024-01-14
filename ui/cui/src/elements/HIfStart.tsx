@@ -1,16 +1,22 @@
+import { HBlock } from "../blocks/HBlock";
+import { HIfBlock } from "../blocks/HIfBlock";
+import { HSequence } from "../blocks/HSequence";
 import { HCanvas } from "../components/HCanvas";
 import { HNode } from "./HNode";
 
 export class HIfStart extends HNode {
 
-    constructor(canvas: HCanvas) {
-        super(canvas);
+    constructor(block: HBlock, canvas: HCanvas) {
+        super(block, canvas);
         this.multiOutput = true;
         this.label = "IF";
     }
 
     addConditionalSeq() {
         console.log("Add new conditional path");
+        if (this.block instanceof HIfBlock) {
+            this.block.addPath("some condition");
+        }
     }
 
     draw(): JSX.Element {

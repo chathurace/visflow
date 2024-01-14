@@ -1,10 +1,11 @@
+import { HBlock } from "../blocks/HBlock";
 import { HCanvas } from "../components/HCanvas";
 import { HNode } from "./HNode";
 
 export class HIfEnd extends HNode {
 
-    constructor(canvas: HCanvas) {
-        super(canvas);
+    constructor(block: HBlock, canvas: HCanvas) {
+        super(block, canvas);
         this.multiInput = true;
         this.label = "END IF";
     }

@@ -1,12 +1,13 @@
 import { edgeHeight, nodeHeight } from "../Constants";
+import { HBlock } from "../blocks/HBlock";
 import { HCanvas } from "../components/HCanvas";
 import { HElement } from "./HElement";
 import { HExpander } from "./HExpander";
 import { HNode } from "./HNode";
 
 export class HEdge extends HElement {
-    _source: HNode|null = null;
-    _target: HNode|null = null;
+    _source: HNode | null = null;
+    _target: HNode | null = null;
 
     private _x1: number = -1;
     private _y1: number = -1;
@@ -16,47 +17,61 @@ export class HEdge extends HElement {
     v: number = 100;
     _expander: HExpander;
 
-    constructor(canvas: HCanvas) {
-        super(canvas);
+    constructor(block: HBlock, canvas: HCanvas) {
+        super(block, canvas);
         this._expander = new HExpander();
         this._expander.edge = this;
     }
 
-    get source(): HNode|null {
+    get source(): HNode | null {
         return this._source;
     }
 
-    set source(node: HNode|null) {
+    set source(node: HNode | null) {
+        let oldSource = this._source;
+        if (oldSource != null) {
+            oldSource.outEdges.splice(oldSource.outEdges.indexOf(this), 1);
+        }
+
         this._source = node;
         if (node == null) {
             return;
         }
         this.x1 = node.midX;
-        this.y1 = node.bottom;
+        this.y1 = node.midY;
 
-        if (node.multiOutput) {
-            node.outEdges.push(this);
-        } else {
-            node.outEdges[0] = this;
+        if (!node.outEdges.includes(this)) {
+            if (node.multiOutput) {
+                node.outEdges.push(this);
+            } else {
+                node.outEdges[0] = this;
+            }
         }
     }
 
-    get target(): HNode|null {
+    get target(): HNode | null {
         return this._target;
     }
 
-    set target(node: HNode|null) {
+    set target(node: HNode | null) {
+        let oldTarget = this._target;
+        if (oldTarget != null) {
+            oldTarget.inEdges.splice(oldTarget.inEdges.indexOf(this), 1);
+        }
+
         this._target = node;
         if (node == null) {
             return;
         }
         this.x2 = node.midX;
-        this.y2 = node.y;
+        this.y2 = node.midY;
 
-        if (node.multiInput) {
-            node.inEdges.push(this);
-        } else {
-            node.inEdges[0] = this;
+        if (!node.inEdges.includes(this)) {
+            if (node.multiInput) {
+                node.inEdges.push(this);
+            } else {
+                node.inEdges[0] = this;
+            }
         }
     }
 
@@ -96,12 +111,18 @@ export class HEdge extends HElement {
         this._expander.midY = (this.y1 + this.y2) / 2;
     }
 
-    pushDown(distance: number): void {
-        this.y1 += distance;
-        this.y2 += distance;
+    get height(): number {
+        return this.y2 - this.y1;
+    }
 
+    set height(value: number) {
+        throw new Error("Cannot set height of edge");
+    }
+
+    pushDown(distance: number): void {
         if (this.target != null) {
-            this.target.pushDown(distance);
+            if (this.target.inEdges[0] === this) 
+                this.target.pushDown(distance);
         }
     }
 
@@ -109,38 +130,11 @@ export class HEdge extends HElement {
         return <>
             <line x1={this.x1} y1={this.y1} x2={this.x2} y2={this.y2} stroke="black" strokeWidth="2" />
             {this._expander.draw()}
-            </>;
+        </>;
     }
 
     connect(node1: HNode, node2: HNode) {
         this.source = node1;
         this.target = node2;
-
-        if (!node1.outEdges.includes(this))
-            node1.outEdges.push(this);
-
-        if (!node2.inEdges.includes(this))
-            node2.inEdges.push(this);
     }
-
-    // Change the target of this edge to the given node.
-    // If this edge already has a target, the new node is placed between the source and the old target.
-    // Vertical position of the new node is adjusted according to the source position.
-    connectTo(node: HNode) {
-        if (this.source == null) {
-            return;
-        }
-        node.y = this.source.bottom + edgeHeight;
-        let oldTarget = this.target;
-        this.connect(this.source, node);
-        if (oldTarget != null) {
-            oldTarget.inEdges.splice(oldTarget.inEdges.indexOf(this), 1);
-            oldTarget.pushDown(nodeHeight + edgeHeight)
-            let edge2 = new HEdge(this.canvas);
-            edge2.source = node;
-            edge2.connectTo(oldTarget);
-        }
-    }
-
-
 }

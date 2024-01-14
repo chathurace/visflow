@@ -6,11 +6,7 @@ import { HNode } from "./HNode";
 export class HTask extends HNode {
 
     testAdd() {
-        let task = new HTask(this.canvas);
-        task.label = "Test";
-        task.x = 100;
-        task.y = 400;
-        this.canvas.render();
+        
     }
 
     draw(): JSX.Element {
@@ -22,7 +18,7 @@ export class HTask extends HNode {
 }
 
 export const addTask = (edge: HEdge) => {
-    let hTask = new HTask(edge.canvas);
+    let hTask = new HTask(edge.block, edge.canvas);
     hTask.label = "Log";
     hTask.connectTo(edge);
     edge.canvas.setSelectedEdge(null);
