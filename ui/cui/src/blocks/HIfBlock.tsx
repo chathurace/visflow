@@ -54,6 +54,7 @@ export class HIfBlock extends HBlock {
             throw new Error("Path not initialized");
         }
         path.y = this.y;
+        path.height = this.height;
         this.paths.push(path);        
         path.x = defaultPath? this.x : this.x + this.width + hGap;
         let oldWidth = this.width;
@@ -68,11 +69,12 @@ export class HIfBlock extends HBlock {
     }
 
     onChildVExpand(child: HBlock, hdiff: number): void {
+        // TODO: child has vexpanded means it's the path with max height.
         let maxPathHeight = 0;
         this.paths.forEach(path => {
+            maxPathHeight = Math.max(maxPathHeight, path.height);
             if (path !== child) {
                 path.height += hdiff;
-                maxPathHeight = Math.max(maxPathHeight, path.height);
             }
         });
         if (maxPathHeight > this.height) {

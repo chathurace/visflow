@@ -45,7 +45,4 @@ export class HSequence extends HBlock {
         this.width = maxChildWidth;
         this.parentBlock?.onChildHExpand(this, diff);
     }
-
-
-    
 }
