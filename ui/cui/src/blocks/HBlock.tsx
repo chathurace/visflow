@@ -1,5 +1,5 @@
 import { on } from "events";
-import { nodeHeight, nodeWidth, vGap } from "../Constants";
+import { edgeHeight, nodeHeight, nodeWidth, vGap } from "../Constants";
 import { HRect } from "../HRect";
 import { HCanvas } from "../components/HCanvas";
 import { HEdge } from "../elements/HEdge";
@@ -136,6 +136,15 @@ export abstract class HBlock extends HRect {
         }
     }
 
+    pullup(distance: number): void {
+        this.y -= distance;
+        if (this.endNode != null) {
+            this.endNode.outEdges.forEach(edge => {
+                edge.pullup(distance);
+            });
+        }
+    }
+
     get height(): number {
         return super.height;
     }
@@ -153,12 +162,30 @@ export abstract class HBlock extends HRect {
         }
     }
 
+    get minHeight(): number {
+        let lastEdge = this.endNode?.inEdges[0];
+        if (lastEdge == null) {
+            throw new Error("Block not initialized. Last edge not found.");
+        }
+        // Last edge height smaller than edgeHeight means the last edge is not valid 
+        // (e.g. could be in a middle of an adjustement)
+        let lastEdgeHeight = lastEdge.height > edgeHeight ? lastEdge.height : edgeHeight;
+        return this.height - (lastEdgeHeight - edgeHeight);
+    }
+
     vExpand(vdiff: number): void {
         this.height += vdiff;
         this.parentBlock?.onChildVExpand(this, vdiff);
     }
 
+    vShrink(vdiff: number): void {
+        this.height -= vdiff;
+        this.parentBlock?.onChildVShrink(this, vdiff);
+    }
+
     abstract onChildVExpand(child: HBlock, hdiff: number): void
+
+    abstract onChildVShrink(child: HBlock, hdiff: number): void
 
     abstract onChildHExpand(child: HBlock, hdiff: number): void
 }

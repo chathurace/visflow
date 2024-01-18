@@ -126,6 +126,13 @@ export class HEdge extends HElement {
         }
     }
 
+    pullup(distance: number): void {
+        if (this.target != null) {
+            if (this.target.inEdges[0] === this) 
+                this.target.pullup(distance);
+        }
+    }
+
     draw(): JSX.Element {
         return <>
             <line x1={this.x1} y1={this.y1} x2={this.x2} y2={this.y2} stroke="black" strokeWidth="2" />
@@ -136,5 +143,15 @@ export class HEdge extends HElement {
     connect(node1: HNode, node2: HNode) {
         this.source = node1;
         this.target = node2;
+    }
+
+    delete(): void {
+        if (this.source != null && this.source.outEdges.indexOf(this) !== -1) {
+            this.source.outEdges.splice(this.source.outEdges.indexOf(this), 1);
+        }
+        if (this.target != null && this.target.inEdges.indexOf(this) !== -1) {
+            this.target.inEdges.splice(this.target.inEdges.indexOf(this), 1);
+        }
+        this.canvas.deleteElement(this);
     }
 }

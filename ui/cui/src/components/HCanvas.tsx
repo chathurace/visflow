@@ -57,6 +57,15 @@ export class HCanvas {
         }
     }
 
+    deleteElement(element: HElement) {
+        this.elements.splice(this.elements.indexOf(element), 1);
+        if (element instanceof HNode) {
+            this.nodes.splice(this.nodes.indexOf(element), 1);
+        } else if (element instanceof HEdge) {
+            this.edges.splice(this.edges.indexOf(element), 1);
+        }
+    }
+
     init() {
         let mainSequence = new HSequence(null);
         mainSequence.x = 0;

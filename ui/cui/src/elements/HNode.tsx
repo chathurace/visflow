@@ -75,6 +75,25 @@ export abstract class HNode extends HElement {
         }
     }
 
+    pullup(distance: number): void {
+        console.log("pulling up " + distance + " " + this.label);
+        if (this.block.startNode === this) {
+            // we are entering a new block. just push the block down.
+            this.block.pullup(distance);
+        } else {
+            this.y -= distance;
+            if (this.block.endNode === this) {
+                if (this.bottom < this.block.bottom) {
+                    this.block.vShrink(distance);
+                }
+            } else {
+                for (const edge of this.outEdges) {
+                    edge.pullup(distance);
+                }
+            }
+        }
+    }
+
     connectTo(edge: HEdge): void {
         if (edge.source == null || edge.target == null) {
             throw new Error("Edge not initialized");
@@ -91,5 +110,22 @@ export abstract class HNode extends HElement {
 
         let newOutEdge = new HEdge(this.block, edge.canvas);
         newOutEdge.connect(this, oldTarget);
+    }
+
+    delete(): void {
+        if (this.multiInput || this.multiOutput) {
+            throw new Error("Cannot delete node with multiple inputs or outputs");
+        }
+        let inEdge = this.inEdges[0];
+        let outEdge = this.outEdges[0];
+        if (inEdge == null || outEdge == null || inEdge.source == null || outEdge.target == null) {
+            throw new Error("Node not initialized");
+        }
+        outEdge.pullup(this.height + vGap);
+        inEdge.connect(inEdge.source, outEdge.target);
+        outEdge.delete();
+        this.block.nodes.splice(this.block.nodes.indexOf(this), 1);
+        this.canvas.deleteElement(this);
+        this.canvas.render();
     }
 }

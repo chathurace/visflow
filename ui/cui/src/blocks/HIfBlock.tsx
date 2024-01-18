@@ -55,8 +55,8 @@ export class HIfBlock extends HBlock {
         }
         path.y = this.y;
         path.height = this.height;
-        this.paths.push(path);        
-        path.x = defaultPath? this.x : this.x + this.width + hGap;
+        this.paths.push(path);
+        path.x = defaultPath ? this.x : this.x + this.width + hGap;
         let oldWidth = this.width;
         this.width = path.x + path.width - this.x;
         let inEdge = new HEdge(this, this.canvas);
@@ -85,6 +85,29 @@ export class HIfBlock extends HBlock {
                 });
             }
             this.parentBlock?.onChildVExpand(this, hdiff);
+        }
+    }
+
+    onChildVShrink(child: HBlock, hdiff: number): void {
+        let maxChildHeight = 0;
+        this.paths.forEach(path => {
+            maxChildHeight = Math.max(maxChildHeight, path.minHeight);
+        });
+
+        if (maxChildHeight < this.height) {
+            this.paths.forEach(path => {
+                path.height = maxChildHeight;
+            });
+            let effectiveHDiff = this.height - maxChildHeight;
+            this.height = maxChildHeight;
+            if (this.endNode != null) {
+                this.endNode.outEdges.forEach(edge => {
+                    edge.pullup(effectiveHDiff);
+                });
+            }
+            this.parentBlock?.onChildVShrink(this, hdiff);
+        } else {
+            child.height = this.height;
         }
     }
 

@@ -11,7 +11,7 @@ export class HTask extends HNode {
 
     draw(): JSX.Element {
         return <>
-        <rect x={this.x} y={this.y} rx="15" ry="15" width={this.width} height={this.height} fill="lightblue" stroke="white" strokeWidth="1" onClick={() => this.testAdd()}/>
+        <rect x={this.x} y={this.y} rx="15" ry="15" width={this.width} height={this.height} fill="lightblue" stroke="white" strokeWidth="1" onClick={() => this.testAdd()} onAuxClick={() => this.delete()}/>
         <text x={this.midX} y={this.midY} dominantBaseline="middle" textAnchor="middle" fill="black">{this.label}</text>
         </>;
     }
