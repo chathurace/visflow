@@ -87,6 +87,7 @@ export class HExpander {
         if (this.edge == null) {
             return;
         }
+        this.edge.canvas.setSelectedNode(null);
         this.edge.canvas.setSelectedEdge(this.edge);
 
         // console.log("testAdd2");

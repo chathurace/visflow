@@ -170,7 +170,7 @@ export abstract class HBlock extends HRect {
         // Last edge height smaller than edgeHeight means the last edge is not valid 
         // (e.g. could be in a middle of an adjustement)
         let lastEdgeHeight = lastEdge.height > edgeHeight ? lastEdge.height : edgeHeight;
-        return this.height - (lastEdgeHeight - edgeHeight);
+        return this.height - (lastEdge.height - edgeHeight);
     }
 
     vExpand(vdiff: number): void {

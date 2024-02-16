@@ -31,7 +31,7 @@ export class HSequence extends HBlock {
     }
 
     onChildVExpand(child: HBlock, hdiff: number): void {
-        this.height += hdiff;        
+        this.height += hdiff;      
     }
 
     onChildVShrink(child: HBlock, hdiff: number): void {

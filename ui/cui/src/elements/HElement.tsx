@@ -1,6 +1,7 @@
 import { HRect } from "../HRect";
 import { HBlock } from "../blocks/HBlock";
 import { HCanvas } from "../components/HCanvas";
+import { HNode } from "./HNode";
 
 export abstract class HElement extends HRect {
     canvas: HCanvas;
@@ -13,7 +14,7 @@ export abstract class HElement extends HRect {
         canvas.addElement(this);
     }
 
-    abstract draw(): JSX.Element;
+    abstract draw(selectedNode: HNode | null): JSX.Element;
 
     abstract pushDown(distance: number): void;
 }

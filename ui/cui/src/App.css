@@ -16,6 +16,13 @@
   flex-direction: column;
 }
 
+.HNodeProps {
+  flex: 2;
+  background-color: moccasin;
+  display: flex;
+  flex-direction: column;
+}
+
 .pallet_item {
   display: flex;
   justify-content: center;

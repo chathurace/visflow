@@ -56,6 +56,11 @@ export abstract class HNode extends HElement {
         return super.y;
     }
 
+    viewProperties = () => {
+        this.canvas.setSelectedNode(this);
+        this.canvas.render(this);
+    }
+
     pushDown(distance: number): void {
         console.log("pushing down " + distance + " " + this.label);
         if (this.block.startNode === this) {
@@ -121,11 +126,17 @@ export abstract class HNode extends HElement {
         if (inEdge == null || outEdge == null || inEdge.source == null || outEdge.target == null) {
             throw new Error("Node not initialized");
         }
-        outEdge.pullup(this.height + vGap);
         inEdge.connect(inEdge.source, outEdge.target);
         outEdge.delete();
+        inEdge.pullup(this.height + vGap);
         this.block.nodes.splice(this.block.nodes.indexOf(this), 1);
         this.canvas.deleteElement(this);
-        this.canvas.render();
+        this.canvas.render(null);
+    }
+
+    getPropertiesView(): JSX.Element {
+        return <>
+                <h2>Properties view is not defined.</h2>
+            </>;
     }
 }
