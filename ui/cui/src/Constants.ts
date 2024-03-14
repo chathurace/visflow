@@ -3,3 +3,4 @@ export const nodeWidth: number = 100;
 export const edgeHeight: number = 100;
 export const hGap: number = 100;
 export const vGap: number = 50;
+export const blockPadding: number = 5;

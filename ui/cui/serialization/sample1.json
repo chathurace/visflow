@@ -1,0 +1,127 @@
+{
+    "id": "1b84c0ae-ea93-4eea-acda-c625f8dfb7be",
+    "btype": "sequence",
+    "x": 0,
+    "nodes": [
+        {
+            "label": "Start",
+            "x": 100,
+            "y": 50
+        },
+        {
+            "label": "End",
+            "x": 100,
+            "y": 750
+        }
+    ],
+    "childBlocks": [
+        {
+            "id": "907a9c18-12f6-48f4-b76e-d4a4280db407",
+            "btype": "ifblock",
+            "x": 100,
+            "nodes": [
+                {
+                    "label": "IF",
+                    "x": 100,
+                    "y": 150
+                },
+                {
+                    "label": "END IF",
+                    "x": 100,
+                    "y": 650
+                }
+            ],
+            "childBlocks": [
+                {
+                    "id": "fb3bf927-498e-4cce-b72d-79deab3da0c2",
+                    "btype": "sequence",
+                    "x": 100,
+                    "nodes": [
+                        {
+                            "label": "",
+                            "x": 100,
+                            "y": 150
+                        },
+                        {
+                            "label": "",
+                            "x": 100,
+                            "y": 650
+                        },
+                        {
+                            "label": "Log",
+                            "x": 100,
+                            "y": 250
+                        }
+                    ],
+                    "childBlocks": []
+                },
+                {
+                    "id": "03f10fed-2168-426f-8fec-3c18cceb30c6",
+                    "btype": "sequence",
+                    "x": 300,
+                    "nodes": [
+                        {
+                            "label": "C",
+                            "x": 300,
+                            "y": 150
+                        },
+                        {
+                            "label": "C",
+                            "x": 300,
+                            "y": 650
+                        },
+                        {
+                            "label": "Log",
+                            "x": 300,
+                            "y": 550
+                        }
+                    ],
+                    "childBlocks": [
+                        {
+                            "id": "5be60c93-cde5-4b94-b1c5-c4ae69edcf13",
+                            "btype": "loop",
+                            "x": 300,
+                            "nodes": [
+                                {
+                                    "label": "Loop",
+                                    "x": 300,
+                                    "y": 250
+                                },
+                                {
+                                    "label": "END Loop",
+                                    "x": 300,
+                                    "y": 450
+                                }
+                            ],
+                            "childBlocks": [
+                                {
+                                    "id": "f03adf46-2b50-43a8-8f82-fc30d70e11d5",
+                                    "btype": "sequence",
+                                    "x": 300,
+                                    "nodes": [
+                                        {
+                                            "label": "",
+                                            "x": 300,
+                                            "y": 250
+                                        },
+                                        {
+                                            "label": "",
+                                            "x": 300,
+                                            "y": 450
+                                        },
+                                        {
+                                            "label": "Log",
+                                            "x": 300,
+                                            "y": 350
+                                        }
+                                    ],
+                                    "childBlocks": []
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -12,7 +12,13 @@ interface HNodePropertiesProps {
 export const HNodeProperties: React.FC<HNodePropertiesProps> = ({selectedNode}) => {
     return (
         <div id='hnodeprops_div' className="HNodeProps">
-            {selectedNode.getPropertiesView()}
+            <>
+                {selectedNode.getPropertiesView()}
+            </>
+            <div>
+                <button onClick={() => selectedNode.delete()}>Delete</button>
+            </div>
+
         </div>);
 };
 

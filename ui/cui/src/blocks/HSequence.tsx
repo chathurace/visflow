@@ -14,6 +14,10 @@ export class HSequence extends HBlock {
         this.condition = condition;
     }
 
+    getType(): string {
+        return "sequence";
+    }
+
     init(canvas: HCanvas): void {
         this.x = 0;
         this.y = 0;
@@ -48,5 +52,9 @@ export class HSequence extends HBlock {
         let diff = maxChildWidth - this.width;    
         this.width = maxChildWidth;
         this.parentBlock?.onChildHExpand(this, diff);
+    }
+
+    serialize(): string {
+        return "a";
     }
 }

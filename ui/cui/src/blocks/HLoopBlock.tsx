@@ -1,14 +1,25 @@
-import { hGap, nodeWidth, vGap } from "../Constants";
+import { blockPadding, hGap, nodeWidth, vGap } from "../Constants";
 import { HCanvas } from "../components/HCanvas";
 import { HEdge } from "../elements/HEdge";
-import { HIfEnd } from "../elements/HIfEnd";
-import { HIfStart } from "../elements/HIfStart";
+import { HLoopEnd } from "../elements/HLoopEnd";
+import { HLoopStart } from "../elements/HLoopStart";
 import { HBlock } from "./HBlock";
 import { HSequence } from "./HSequence";
 
-export class HIfBlock extends HBlock {
+export class HLoopBlock extends HBlock {
 
     paths: HSequence[] = [];
+
+    constructor(parentBlock: HBlock | null) {
+        super(parentBlock);
+        if (parentBlock != null) {
+            parentBlock.padding += blockPadding;
+        }
+    }
+
+    getType(): string {
+        return "loop";
+    }
 
     init(canvas: HCanvas): void {
         this.x = 0;
@@ -16,11 +27,11 @@ export class HIfBlock extends HBlock {
         this.width = nodeWidth;
         this.height = nodeWidth;
 
-        this.startNode = new HIfStart(this, canvas);
+        this.startNode = new HLoopStart(this, canvas);
         this.startNode.midX = this._midX;
         this.startNode.y = this._y;
 
-        this.endNode = new HIfEnd(this, canvas);
+        this.endNode = new HLoopEnd(this, canvas);
         this.endNode.midX = this._midX;
         this.endNode.y = this.startNode.bottom + vGap;
         this.height = this.endNode.bottom - this._y;
@@ -28,9 +39,6 @@ export class HIfBlock extends HBlock {
         let defaultPath = new HSequence(this);
         defaultPath.init(canvas);
         this.connect(defaultPath, true);
-
-        // let truePath = new HEdge(this, canvas);
-        // truePath.connect(this.startNode, this.endNode);
 
         this.height = this.endNode.bottom - this.startNode.y;
         this.width = nodeWidth;
@@ -123,9 +131,10 @@ export class HIfBlock extends HBlock {
     }
 }
 
-export const addIfBlock = (edge: HEdge) => {
-    let ifBlock = new HIfBlock(edge.block);
-    ifBlock.connectTo(edge);
+export const addLoopBlock = (edge: HEdge) => {
+    let loopBlock = new HLoopBlock(edge.block);
+    loopBlock.connectTo(edge);
+    edge.canvas.blocks.push(loopBlock);
     edge.canvas.setSelectedEdge(null);
     edge.canvas.render(null);
 }

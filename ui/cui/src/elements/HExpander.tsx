@@ -13,10 +13,11 @@ export class HExpander {
     _midY: number = -1;
     _width: number = 15;
     _height: number = 15;
+    visible: boolean = true;
 
-    // constructor(edge: HEdge) {
-    //     this.edge = edge;
-    // }
+    constructor(visible: boolean = true) {
+        this.visible = visible;
+    }
 
     get label(): string {
         return this._label;
@@ -108,6 +109,10 @@ export class HExpander {
     }
 
     draw(): JSX.Element {
+        if (!this.visible) {
+            return <></>;
+        }
+        
         return <>
             <rect x={this.x} y={this.y} rx="3" ry="3" width={this.width} height={this.height} fill="lightgrey" stroke="grey" strokeWidth="1" onClick={() => this.testAdd2()}/>
             {/* <text x={this.midX} y={this.midY} dominantBaseline="middle" textAnchor="middle" fill="black" onClick={() => this.testAdd()}>{this.label}</text> */}

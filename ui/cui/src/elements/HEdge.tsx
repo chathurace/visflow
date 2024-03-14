@@ -17,9 +17,9 @@ export class HEdge extends HElement {
     v: number = 100;
     _expander: HExpander;
 
-    constructor(block: HBlock, canvas: HCanvas) {
+    constructor(block: HBlock, canvas: HCanvas, active: boolean = true) {
         super(block, canvas);
-        this._expander = new HExpander();
+        this._expander = new HExpander(active);
         this._expander.edge = this;
     }
 

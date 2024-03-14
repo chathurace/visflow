@@ -1,0 +1,37 @@
+{"model": {
+    "name": "model1",
+    "blocks": [{
+        "id": "aa3242",
+        "type": "sequence",
+        "nodes":
+        [
+            {
+                "type": "start",
+                "condition": ""
+            },
+            {
+                "ref": "aa3243"
+            },
+            {
+                "type": "end"
+            }
+        ]},
+        {
+            "id": "aa3243",
+            "type": "libfunc",
+            "package": "http",
+            "function": "get",
+            "args": {
+                "url": "http://www.google.com"
+            }
+        },
+        {
+            "id": "aa3244",
+            "type": "b_log",
+            "args": {
+                "message": "hello",
+                "level": "info"
+            }
+        }
+    ]
+}}

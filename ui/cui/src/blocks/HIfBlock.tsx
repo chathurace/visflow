@@ -1,4 +1,4 @@
-import { hGap, nodeWidth, vGap } from "../Constants";
+import { blockPadding, hGap, nodeWidth, vGap } from "../Constants";
 import { HCanvas } from "../components/HCanvas";
 import { HEdge } from "../elements/HEdge";
 import { HIfEnd } from "../elements/HIfEnd";
@@ -10,8 +10,19 @@ export class HIfBlock extends HBlock {
 
     paths: HSequence[] = [];
 
+    constructor(parentBlock: HBlock | null) {
+        super(parentBlock);
+        if (parentBlock != null) {
+            parentBlock.padding += blockPadding;
+        }
+    }
+
+    getType(): string {
+        return "ifblock";
+    }
+
     init(canvas: HCanvas): void {
-        this.x = 0;
+        this.x = 0
         this.y = 0;
         this.width = nodeWidth;
         this.height = nodeWidth;
@@ -34,6 +45,8 @@ export class HIfBlock extends HBlock {
 
         this.height = this.endNode.bottom - this.startNode.y;
         this.width = nodeWidth;
+
+        this.adjustBorder();
     }
 
     addPath(condition: string) {
@@ -56,12 +69,17 @@ export class HIfBlock extends HBlock {
         path.y = this.y;
         path.height = this.height;
         this.paths.push(path);
-        path.x = defaultPath ? this.x : this.x + this.width + hGap;
+        if (defaultPath) {
+            path.midX = this.midX;
+        } else {
+            path.x = this.x + this.width + hGap;
+        }
+        // path.midX = defaultPath ? this.midX : this.x + this.width + hGap;
         let oldWidth = this.width;
         this.width = path.x + path.width - this.x;
-        let inEdge = new HEdge(this, this.canvas);
+        let inEdge = new HEdge(this, this.canvas, false);
         inEdge.connect(this.startNode, path.startNode);
-        let outEdge = new HEdge(this, this.canvas);
+        let outEdge = new HEdge(this, this.canvas, false);
         outEdge.connect(path.endNode, this.endNode);
         if (!defaultPath) {
             this.parentBlock?.onChildHExpand(this, this.width - oldWidth);
@@ -126,6 +144,7 @@ export class HIfBlock extends HBlock {
 export const addIfBlock = (edge: HEdge) => {
     let ifBlock = new HIfBlock(edge.block);
     ifBlock.connectTo(edge);
+    edge.canvas.blocks.push(ifBlock);
     edge.canvas.setSelectedEdge(null);
     edge.canvas.render(null);
 }

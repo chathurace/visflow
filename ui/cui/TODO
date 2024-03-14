@@ -1,5 +1,13 @@
-Add loops
+Add loops - done
+Highlight blocks - done
+View conditions when clicked on condition nodes
 Hover menu with delete and properties
 Fix delete
 Serialize
     Block based
+Diagram scroll - done
+Remove unwanted expanders - done
+block appearance
+    top - control box
+    bottom - marker
+connectors

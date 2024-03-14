@@ -7,6 +7,17 @@
 .HCanvas {
   flex: 8;
   background-color: white;
+  height: 100%;
+  width: 100%;
+  border:2px solid #000;
+  overflow: scroll;
+}
+
+.HSVG {
+  height: 2800px;
+  width: 2800px;
+  border:1px dotted #ccc;
+  background-color: white;
 }
 
 .HPallet {

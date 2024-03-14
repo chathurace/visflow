@@ -105,7 +105,7 @@ export abstract class HNode extends HElement {
         }
 
         let oldTarget = edge.target;
-        this.x = oldTarget.x;
+        this.midX = oldTarget.midX;
         this.y = edge.source.bottom + vGap;
         edge.target = this;
         if (oldTarget.y < this.bottom + vGap) {

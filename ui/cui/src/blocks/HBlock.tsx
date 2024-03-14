@@ -1,19 +1,25 @@
-import { on } from "events";
-import { edgeHeight, nodeHeight, nodeWidth, vGap } from "../Constants";
+import { blockPadding, edgeHeight, nodeHeight, nodeWidth, vGap } from "../Constants";
 import { HRect } from "../HRect";
 import { HCanvas } from "../components/HCanvas";
 import { HEdge } from "../elements/HEdge";
 import { HNode } from "../elements/HNode";
+import { v4 as uuid } from 'uuid';
 
 export abstract class HBlock extends HRect {
+    id: string = uuid();
     startNode: HNode | null = null;
     endNode: HNode | null = null;
     nodes: HNode[] = [];
     childBlocks: HBlock[] = [];
     canvas: HCanvas | null = null;
     parentBlock: HBlock | null = null;
+    border: HRect = new HRect();
+
+    _padding: number = blockPadding;
 
     abstract init(canvas: HCanvas): void;
+
+    abstract getType(): string;
 
     constructor(parentBlock: HBlock | null) {
         super();
@@ -53,29 +59,8 @@ export abstract class HBlock extends HRect {
         let newOutEdge = new HEdge(this.parentBlock, edge.canvas);
         newOutEdge.source = this.endNode;
         newOutEdge.target = oldTarget;
+        this.adjustBorder();
     }
-
-    // connectTo(edge: HEdge): void {
-    //     this.canvas = edge.canvas;
-    //     edge.block = this;
-    //     if (edge.source == null || edge.target == null) {
-    //         throw new Error("Edge not initialized");
-    //     }
-    //     let oldTarget = edge.target;
-    //     this.init(this.canvas);
-    //     this.midX = oldTarget.midX;
-    //     this.y = oldTarget.y;
-
-    //     if (this.startNode == null || this.endNode == null) {
-    //         throw new Error("Block not initialized");
-    //     }
-
-    //     edge.target = this.startNode;
-    //     oldTarget.pushDown(this.height + vGap);
-    //     let newOutEdge = new HEdge(this, edge.canvas);
-    //     newOutEdge.source = this.endNode;
-    //     newOutEdge.target = oldTarget;
-    // }
 
     set x(x: number) {
         let xdiff = x - this._x;
@@ -127,6 +112,17 @@ export abstract class HBlock extends HRect {
         return super.y;
     }
 
+    get padding(): number {
+        return this._padding;
+    }
+
+    set padding(padding: number) {
+        this._padding = padding;
+        if (this.parentBlock != null) {
+            this.parentBlock.padding += blockPadding;
+        }
+    }
+
     pushDown(distance: number): void {
         this.y += distance;
         if (this.endNode != null) {
@@ -143,6 +139,13 @@ export abstract class HBlock extends HRect {
                 edge.pullup(distance);
             });
         }
+    }
+
+    adjustBorder(): void {
+        this.border.x = this.x - this.padding;
+        this.border.y = this.y - blockPadding;
+        this.border.width = this.width + 2 * this.padding;
+        this.border.height = this.height + 2 * blockPadding;
     }
 
     get height(): number {
@@ -181,6 +184,17 @@ export abstract class HBlock extends HRect {
     vShrink(vdiff: number): void {
         this.height -= vdiff;
         this.parentBlock?.onChildVShrink(this, vdiff);
+    }
+
+    draw(selectedBlock: HBlock | null = null): JSX.Element {
+        let selected = this === selectedBlock;
+        this.adjustBorder();
+        return (
+            <g>
+                {/* <rect x={this.x - blockPadding} y={this.y - blockPadding} width={this.width + 2 * blockPadding} height={this.height + 2 * blockPadding} fill={selected ? "lightblue" : "white"} stroke="grey" /> */}
+                <rect x={this.border.x} y={this.border.y} width={this.border.width} height={this.border.height} fill={selected ? "lightblue" : "white"} stroke="grey" />
+            </g>
+        );
     }
 
     abstract onChildVExpand(child: HBlock, hdiff: number): void

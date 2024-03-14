@@ -5,6 +5,7 @@ import { edgeHeight, vGap } from "../Constants";
 import { HTask } from "../elements/HTask";
 import { HSequence } from "../blocks/HSequence";
 import { HNode } from "../elements/HNode";
+import { HBlock } from "../blocks/HBlock";
 
 interface HCanvasViewProps {
     selectedNode: HNode | null;
@@ -35,9 +36,11 @@ export class HCanvas {
     setDiagram: React.Dispatch<React.SetStateAction<JSX.Element | null>>;
     setSelectedEdge: React.Dispatch<React.SetStateAction<HEdge | null>>;
     setSelectedNode: React.Dispatch<React.SetStateAction<HNode | null>>;
+    rootBlock: HBlock | null = null;
     private elements: HElement[] = [];
     private nodes: HNode[] = [];
     private edges: HEdge[] = [];
+    blocks: HBlock[] = [];
 
     constructor(setDiagram: React.Dispatch<React.SetStateAction<JSX.Element | null>>, 
         setSelectedEdge: React.Dispatch<React.SetStateAction<HEdge | null>>,
@@ -66,23 +69,34 @@ export class HCanvas {
     }
 
     init() {
-        let mainSequence = new HSequence(null);
-        mainSequence.x = 0;
-        mainSequence.y = 0;
-        
-        let startTask = new HTask(mainSequence, this);
-        startTask.label = "Start";
-        startTask.x = 100;
-        startTask.y = 50;
-
-        let endTask = new HTask(mainSequence, this);
-        endTask.label = "End";
-        endTask.x = 100;
-        endTask.y = startTask.bottom + vGap;
-
-        let startEdge = new HEdge(mainSequence, this);
-        startEdge.connect(startTask, endTask);
+        let mainSequence = new HSequence(null, "con");
+        mainSequence.init(this);
+        mainSequence.x = 100;
+        mainSequence.y = 50;
+        this.rootBlock = mainSequence;
     }
+
+    // init() {
+    //     let mainSequence = new HSequence(null);
+    //     mainSequence.x = 0;
+    //     mainSequence.y = 0;
+    //     this.rootBlock = mainSequence;
+        
+    //     let startTask = new HTask(mainSequence, this);
+    //     startTask.label = "Start";
+    //     startTask.x = 100;
+    //     startTask.y = 50;
+    //     mainSequence.startNode = startTask;
+
+    //     let endTask = new HTask(mainSequence, this);
+    //     endTask.label = "End";
+    //     endTask.x = 100;
+    //     endTask.y = startTask.bottom + vGap;
+    //     mainSequence.endNode = endTask;
+
+    //     let startEdge = new HEdge(mainSequence, this);
+    //     startEdge.connect(startTask, endTask);
+    // }
 
     render(selectedNode: HNode|null) {
         this.setDiagram(this.drawDiagram(selectedNode));
@@ -91,12 +105,17 @@ export class HCanvas {
     drawDiagram(selectedNode: HNode|null): JSX.Element {
         return <>
             {/* <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0 }}> */}
-            <svg width="100%" height="100%" style={{ top: 0, left: 0 }} onKeyUp={() => {console.log("key upp")}}>
+            <svg className="HSVG" width="100%" height="100%" style={{ top: 0, left: 0 }} onKeyUp={() => {console.log("key upp")}}>
                 {/* {this.elements.map((element, i) => (
                     <>
                         {element.draw()}
                     </>
                 ))} */}
+                {this.blocks.map((block, i) => (
+                    <>
+                        {block.draw()}
+                    </>
+                ))}
                 {this.edges.map((edge, i) => (
                     <>
                         {edge.draw()}
