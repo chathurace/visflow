@@ -14,14 +14,14 @@ export class HTask extends HNode {
     }
 
     draw(selectedNode: HNode | null): JSX.Element {
-        let strokeColor = "white";
+        let strokeColor = "blue";
         if (selectedNode === this) {
             strokeColor = "black";
         }
         console.log(strokeColor);
 
         return <>
-        <rect x={this.x} y={this.y} rx="15" ry="15" width={this.width} height={this.height} fill="lightblue" stroke={strokeColor} strokeWidth="1" onKeyUp={(e: KeyboardEvent<SVGRectElement>) => console.log("key up")} onClick={() => this.viewProperties()} onMouseOver={() => console.log("mouse2")}/>
+        <rect x={this.x} y={this.y} rx="10" ry="10" width={this.width} height={this.height} fill="lightblue" stroke={strokeColor} strokeWidth="1" onKeyUp={(e: KeyboardEvent<SVGRectElement>) => console.log("key up")} onClick={() => this.viewProperties()} onMouseOver={() => console.log("mouse2")}/>
         {/* <rect x={this.x + this.width} y={this.y} rx="1" ry="1" width="40" height={this.height} fill="lightgreen" stroke="white" strokeWidth="1" /> */}
         <text x={this.midX} y={this.midY} dominantBaseline="middle" textAnchor="middle" fill="black">{this.label}</text>
         </>;

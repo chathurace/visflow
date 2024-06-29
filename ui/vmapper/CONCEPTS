@@ -1,0 +1,66 @@
+Moving components - done
+// Data components' top field can have two circles
+Add data
+    give data type
+    give instance (can contain values)
+Add function
+    New functions can also be created by connecting input feilds and output feilds from data
+Multi-output functions
+Function implementation can be
+    existing function
+    new function
+    submapping    
+Data    
+    A field can be input and/or output
+    Data components can be resized
+    Can be scrollable
+    Fields are searchable
+    Can hide unmapped feilds
+
+Arrays need to be handled with queries
+
+Arrays are handled by the combination of Iterators and Collectors
+    Iterator
+        Gets one or more arrays and zero or more scalers as inputs
+        Produces one or more fields as outputs (these are the "select" part of the query)
+        Outputs can only be given as inputs to Collectors
+        One iterator can provide inputs for one or more Collectors
+        Iterator must have a join
+            Join can have one or more input arrays
+    
+    Collectors
+        Gets one or more scalers as inputs, outputted by an Iterator
+        Produces an array as an output
+
+
+
+Arrays need to be handled via submappings
+    For each submapping input of type array, it is possible to specify a iteration behavior
+        iterate
+        filter
+        join
+        select one item
+    For the first three behavoirs, the output must be an array
+
+Iterable functions
+    One or more inputs needs to be an array
+        Array input can be marked as "iterated"
+        Iterated inputs are treated as scalers within the function
+    Output of the function is an array
+    
+T1[] can be given as an input of function F1 where T1 is expected
+    Then T1 will be iterated (with filters if needed)
+    Any output that depends on T1 will become an array
+
+
+
+/*
+Arrays are mapped as submappings
+    If an array is given as an input, it will be iterated
+
+Iterate function
+    Input is any array
+    Output is an element of the given array
+    Can have filters
+    If iterate function's output is given as an input to Data d1, d1 becomes an array
+*/

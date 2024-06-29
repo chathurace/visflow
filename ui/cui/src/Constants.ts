@@ -4,3 +4,7 @@ export const edgeHeight: number = 100;
 export const hGap: number = 100;
 export const vGap: number = 50;
 export const blockPadding: number = 5;
+export const blockHeaderHieght: number = nodeHeight;
+export const blockFooterHieght: number = nodeHeight;
+export const conditionDistance: number = 15;
+export const conditionHeight: number = 30;

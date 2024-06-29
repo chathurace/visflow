@@ -189,12 +189,13 @@ export abstract class HBlock extends HRect {
     draw(selectedBlock: HBlock | null = null): JSX.Element {
         let selected = this === selectedBlock;
         this.adjustBorder();
-        return (
-            <g>
-                {/* <rect x={this.x - blockPadding} y={this.y - blockPadding} width={this.width + 2 * blockPadding} height={this.height + 2 * blockPadding} fill={selected ? "lightblue" : "white"} stroke="grey" /> */}
-                <rect x={this.border.x} y={this.border.y} width={this.border.width} height={this.border.height} fill={selected ? "lightblue" : "white"} stroke="grey" />
-            </g>
-        );
+        return <></>
+        // return (
+        //     <g>
+        //         {/* <rect x={this.x - blockPadding} y={this.y - blockPadding} width={this.width + 2 * blockPadding} height={this.height + 2 * blockPadding} fill={selected ? "lightblue" : "white"} stroke="grey" /> */}
+        //         <rect x={this.border.x} y={this.border.y} width={this.border.width} height={this.border.height} fill={selected ? "lightblue" : "white"} stroke="grey" />
+        //     </g>
+        // );
     }
 
     abstract onChildVExpand(child: HBlock, hdiff: number): void

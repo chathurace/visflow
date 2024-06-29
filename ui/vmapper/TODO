@@ -1,0 +1,15 @@
+move Iterators
+adding iterator outputs
+    type in
+    select from input arrays
+component resize
+component content scrolling - done
+data element provisioning
+    from bal record
+    from json schema
+collector
+    from bal record
+    dynamically generate from iterator output links
+function group
+    groups multiple functions into a single UI unit
+    group can contain multiple inputs and multiple outputs

@@ -15,10 +15,12 @@ export class HEdge extends HElement {
     private _y2: number = -1;
 
     v: number = 100;
+    square: boolean = false;
     _expander: HExpander;
 
-    constructor(block: HBlock, canvas: HCanvas, active: boolean = true) {
+    constructor(block: HBlock, canvas: HCanvas, active: boolean = true, square: boolean = false) {
         super(block, canvas);
+        this.square = square;
         this._expander = new HExpander(active);
         this._expander.edge = this;
     }
@@ -135,7 +137,9 @@ export class HEdge extends HElement {
 
     draw(): JSX.Element {
         return <>
-            <line x1={this.x1} y1={this.y1} x2={this.x2} y2={this.y2} stroke="black" strokeWidth="2" />
+            {!this.square && <line x1={this.x1} y1={this.y1} x2={this.x1} y2={this.y2} stroke="black" strokeWidth="1" />}
+            {this.square && this.x1 <= this.x2 && <><line x1={this.x1} y1={this.y1} x2={this.x2} y2={this.y1} stroke="black" strokeWidth="1" /><line x1={this.x2} y1={this.y1} x2={this.x2} y2={this.y2} stroke="black" strokeWidth="1" /></>}
+            {this.square && this.x1 > this.x2 && <><line x1={this.x1} y1={this.y1} x2={this.x1} y2={this.y2} stroke="black" strokeWidth="1" /><line x1={this.x1} y1={this.y2} x2={this.x2} y2={this.y2} stroke="black" strokeWidth="1" /></>}
             {this._expander.draw()}
         </>;
     }

@@ -1,4 +1,4 @@
-import { blockPadding, hGap, nodeWidth, vGap } from "../Constants";
+import { blockFooterHieght, blockHeaderHieght, blockPadding, conditionDistance, conditionHeight, edgeHeight, hGap, nodeHeight, nodeWidth, vGap } from "../Constants";
 import { HCanvas } from "../components/HCanvas";
 import { HEdge } from "../elements/HEdge";
 import { HIfEnd } from "../elements/HIfEnd";
@@ -33,10 +33,10 @@ export class HIfBlock extends HBlock {
 
         this.endNode = new HIfEnd(this, canvas);
         this.endNode.midX = this._midX;
-        this.endNode.y = this.startNode.bottom + vGap;
+        this.endNode.y = this.startNode.bottom + conditionDistance + conditionHeight + vGap;
         this.height = this.endNode.bottom - this._y;
 
-        let defaultPath = new HSequence(this);
+        let defaultPath = new HSequence(this, "Default");
         defaultPath.init(canvas);
         this.connect(defaultPath, true);
 
@@ -66,8 +66,9 @@ export class HIfBlock extends HBlock {
         if (path.startNode == null || path.endNode == null) {
             throw new Error("Path not initialized");
         }
-        path.y = this.y;
-        path.height = this.height;
+        path.y = this.startNode.bottom + conditionDistance;
+        // path.y = this.y;
+        path.height = path.endNode.bottom - path.startNode.y;
         this.paths.push(path);
         if (defaultPath) {
             path.midX = this.midX;
@@ -77,13 +78,13 @@ export class HIfBlock extends HBlock {
         // path.midX = defaultPath ? this.midX : this.x + this.width + hGap;
         let oldWidth = this.width;
         this.width = path.x + path.width - this.x;
-        let inEdge = new HEdge(this, this.canvas, false);
+        let inEdge = new HEdge(this, this.canvas, false, true);
         inEdge.connect(this.startNode, path.startNode);
-        let outEdge = new HEdge(this, this.canvas, false);
+        let outEdge = new HEdge(this, this.canvas, false, true);
         outEdge.connect(path.endNode, this.endNode);
-        if (!defaultPath) {
-            this.parentBlock?.onChildHExpand(this, this.width - oldWidth);
-        }
+        // if (!defaultPath) {
+        this.parentBlock?.onChildHExpand(this, this.width - oldWidth);
+        // }
     }
 
     onChildVExpand(child: HBlock, hdiff: number): void {
@@ -97,14 +98,25 @@ export class HIfBlock extends HBlock {
             path.height = maxPathHeight;
         });
 
-        if (maxPathHeight > this.height) {
-            this.height = maxPathHeight;
+        let newHeight = maxPathHeight + blockHeaderHieght + conditionDistance;
+        let diff = newHeight - this.height;
+        if (diff > 0) {
+            this.height = newHeight;
             if (this.endNode != null) {
                 this.endNode.outEdges.forEach(edge => {
-                    edge.pushDown(hdiff);
+                    edge.pushDown(diff);
                 });
             }
         }
+
+        // if (maxPathHeight + blockHeaderHieght + blockFooterHieght + conditionDistance > this.height) {
+        //     this.height = maxPathHeight + blockHeaderHieght + blockFooterHieght + conditionDistance;
+        //     if (this.endNode != null) {
+        //         this.endNode.outEdges.forEach(edge => {
+        //             edge.pushDown(hdiff);
+        //         });
+        //     }
+        // }
     }
 
     onChildVShrink(child: HBlock, hdiff: number): void {

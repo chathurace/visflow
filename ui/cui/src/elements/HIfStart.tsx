@@ -1,16 +1,17 @@
 import React, { ChangeEvent } from "react";
 import { HBlock } from "../blocks/HBlock";
 import { HIfBlock } from "../blocks/HIfBlock";
-import { HSequence } from "../blocks/HSequence";
 import { HCanvas } from "../components/HCanvas";
 import { HNode } from "./HNode";
+import { blockHeaderHieght, nodeHeight } from "../Constants";
 
 export class HIfStart extends HNode {
 
     constructor(block: HBlock, canvas: HCanvas) {
         super(block, canvas);
         this.multiOutput = true;
-        this.label = "IF";
+        this.label = "Switch";
+        this.height = blockHeaderHieght;
     }
 
     addConditionalSeq(condition: string = "") {
@@ -21,10 +22,22 @@ export class HIfStart extends HNode {
     }
 
     draw(): JSX.Element {
+        // return a hexagon (drawed using svg polygon) with a label. top and bottom are flat, sides are slanted
         return <>
-        <rect x={this.x} y={this.y} rx="15" ry="15" width={this.width} height={this.height} fill="lightblue" stroke="white" strokeWidth="1" onClick={() => this.viewProperties()}/>
-        <text x={this.midX} y={this.midY} dominantBaseline="middle" textAnchor="middle" fill="black">{this.label}</text>
+            <polygon points={this.x + "," + (this.y + this.height / 2) + " " + 
+                (this.x + this.width / 4) + "," + this.y + " " + 
+                (this.x + this.width * 3 / 4) + "," + this.y + " " + 
+                (this.x + this.width) + "," + (this.y + this.height / 2) + " " + 
+                (this.x + this.width * 3 / 4) + "," + (this.y + this.height) + " " + 
+                (this.x + this.width / 4) + "," + (this.y + this.height) + " " + 
+                this.x + "," + (this.y + this.height / 2)} fill="lightpink" stroke="red" strokeWidth="1" onClick={() => this.viewProperties()}/>
+            <text x={this.midX} y={this.midY} dominantBaseline="middle" textAnchor="middle" fill="black">{this.label}</text>
         </>;
+
+        // return <>
+        // <rect x={this.x} y={this.y} rx="0" ry="0" width={this.width} height={this.height} fill="lightblue" stroke="white" strokeWidth="1" onClick={() => this.viewProperties()}/>
+        // <text x={this.midX} y={this.midY} dominantBaseline="middle" textAnchor="middle" fill="black">{this.label}</text>
+        // </>;
     }
 
     getPropertiesView(): JSX.Element {

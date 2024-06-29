@@ -75,3 +75,29 @@
     transform: rotate(360deg);
   }
 }
+
+/* Style for the label */
+label {
+  display: block; /* Make label a block element */
+  margin-bottom: 5px; /* Add space below label */
+  font-weight: bold; /* Make label text bold */
+}
+
+/* Style for the input */
+input[type="text"] {
+  width: 200px; /* Set width of input */
+  padding: 5px; /* Add padding inside input */
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 4px; /* Add border radius */
+}
+
+/* Style for the button */
+button {
+  padding: 5px 10px; /* Add padding inside button */
+  background-color: #bdd6f2; /* Set background color */
+  color: #080707; /* Set text color */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Add border radius */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  margin-top: 10px;
+}

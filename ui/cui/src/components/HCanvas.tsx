@@ -69,7 +69,7 @@ export class HCanvas {
     }
 
     init() {
-        let mainSequence = new HSequence(null, "con");
+        let mainSequence = new HSequence(null, null, "Start", "End");
         mainSequence.init(this);
         mainSequence.x = 100;
         mainSequence.y = 50;
